@@ -1,0 +1,17 @@
+version: '2'
+services:
+  simple-jwt-go:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    environment:
+      - VIRTUAL_HOST=your_domain
+      - VIRTUAL_PORT=5202
+      - LETSENCRYPT_HOST=your_domain
+      - LETSENCRYPT_EMAIL=your_email
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

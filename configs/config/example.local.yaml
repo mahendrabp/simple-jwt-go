@@ -1,7 +1,7 @@
 server:
   debug: true
   app_version: 1.0.0
-  addr: :5201
+  addr: :5202
   jwt_secret: 123456
   jwt_refresh_secret: 123456
 
