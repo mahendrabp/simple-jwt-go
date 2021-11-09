@@ -48,6 +48,7 @@ func main() {
 	defer db.Close()
 
 	s := server.New(cfg, db, log)
+
 	if err := s.Run(); err != nil {
 		log.PanicFormat("server is not running: %v", err)
 	}
