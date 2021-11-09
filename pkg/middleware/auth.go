@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"simple-jwt-go/pkg/config"
 	"simple-jwt-go/pkg/domain"
 	"simple-jwt-go/pkg/utils"
@@ -30,17 +31,13 @@ func Auth(cfg *config.Config, userUseCase domain.UserUseCase, log utils.Logger) 
 func verifyAccessToken(cfg *config.Config, c echo.Context, log utils.Logger) error {
 	tokenName := "access"
 	bearerToken := c.Request().Header.Get("Authorization")
-	if bearerToken != "" {
+
+	if bearerToken != "" || len(bearerToken) != 0 {
 		arr := strings.Split(bearerToken, " ")
 		if len(arr) == 2 && arr[0] == "Bearer" {
 			token := arr[1]
 
-			if err := utils.ValidateToken(
-				c,
-				tokenName,
-				token,
-				cfg.Server.JwtSecret,
-			); err != nil {
+			if err := utils.ValidateToken(c, tokenName, token, cfg.Server.JwtSecret); err != nil {
 				log.ErrorFormat("validateToken: %v", err)
 				return err
 			}
@@ -49,18 +46,14 @@ func verifyAccessToken(cfg *config.Config, c echo.Context, log utils.Logger) err
 		}
 	}
 
+	fmt.Println("this called")
 	accessCookie, err := c.Cookie("access_token")
 	if err != nil {
 		log.ErrorFormat("c.Cookie: %v", err)
 		return err
 	}
 
-	if err = utils.ValidateToken(
-		c,
-		tokenName,
-		accessCookie.Value,
-		cfg.Server.JwtSecret,
-	); err != nil {
+	if err = utils.ValidateToken(c, tokenName, accessCookie.Value, cfg.Server.JwtSecret); err != nil {
 		log.ErrorFormat("validateToken: %v", err)
 		return err
 	}

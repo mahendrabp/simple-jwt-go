@@ -66,3 +66,7 @@ func (u *User) ComparePassword(password string) error {
 
 	return nil
 }
+
+func (u *User) RemovePassword() {
+	u.Password = ""
+}
