@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"simple-jwt-go/configs/persist/postgres"
 	"simple-jwt-go/pkg/server"
+	"simple-jwt-go/pkg/utils"
 
 	"simple-jwt-go/pkg/config"
 )
@@ -29,6 +29,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	log := utils.NewLogger()
+	log.Init(cfg.Server.Debug, cfg.Logger.Level)
+
 	dbConfig := postgres.NewConfig(
 		cfg.DB.Driver,
 		cfg.DB.Host,
@@ -40,12 +43,12 @@ func main() {
 	)
 	db, err := postgres.NewClient(dbConfig)
 	if err != nil {
-		log.Fatalf("no db connection: %v", err)
+		log.FatalFormat("no db connection: %v", err)
 	}
 	defer db.Close()
 
-	s := server.New(cfg, db)
+	s := server.New(cfg, db, log)
 	if err := s.Run(); err != nil {
-		log.Panicf("server is not running: %v", err)
+		log.PanicFormat("server is not running: %v", err)
 	}
 }
