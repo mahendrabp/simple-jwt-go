@@ -1,0 +1,29 @@
+server:
+  debug: true
+  app_version: 1.0.0
+  addr: :5201
+  jwt_secret: 123456
+  jwt_refresh_secret: 123456
+
+db:
+  driver: postgres
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  name: simple-jwt-go
+  ssl: disable
+
+auth:
+  access_token:
+    max_age: 600 # 10 minutes
+    secure: false
+    http_only: true
+
+  refresh_token:
+    max_age: 86400 # 24 hours
+    secure: false
+    http_only: true
+
+logger:
+  level:

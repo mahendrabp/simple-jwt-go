@@ -1,0 +1,3 @@
+configs/config/local.yaml
+configs/config/prod.yaml
+.env
