@@ -6,6 +6,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type Server struct {
@@ -25,6 +26,7 @@ func New(cfg *config.Config, db *sqlx.DB, log utils.Logger) *Server {
 }
 
 func (s *Server) Run() error {
+	s.router.Use(middleware.Logger())
 	s.middleware()
 	s.handlers()
 
