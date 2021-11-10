@@ -1,4 +1,58 @@
 basePath: /api
+definitions:
+  domain.AuthUser:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        example: 360
+        type: integer
+      refresh_token:
+        type: string
+      token_type:
+        example: Bearer
+        type: string
+      user:
+        $ref: '#/definitions/domain.User'
+    required:
+    - access_token
+    - expires_in
+    - refresh_token
+    - token_type
+    type: object
+  domain.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        example: test@email.test
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - email
+    type: object
+  swagger.Error:
+    properties:
+      message:
+        type: string
+    required:
+    - message
+    type: object
+  swagger.UserRequest:
+    properties:
+      email:
+        example: test@email.test
+        type: string
+      password:
+        example: p4sSWorD
+        type: string
+    required:
+    - email
+    - password
+    type: object
 host: localhost:5202
 info:
   contact:
@@ -11,8 +65,72 @@ info:
   title: Simple JWT Golang
   version: "1.0"
 paths:
-  /todos:
-    post: {}
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/swagger.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.AuthUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagger.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/swagger.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagger.Error'
+      summary: Login for user
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/swagger.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.AuthUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/swagger.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/swagger.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/swagger.Error'
+      summary: Register new user
+      tags:
+      - Auth
 schemes:
 - http
 securityDefinitions:

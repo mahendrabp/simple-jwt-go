@@ -23,8 +23,8 @@ type (
 		User         *User  `json:"user"`
 		TokenType    string `json:"token_type" validate:"required" example:"Bearer"`
 		ExpiresIn    int    `json:"expires_in" validate:"required" example:"360"`
-		AccessToken  string `json:"access_token" validate:"required"`
-		RefreshToken string `json:"refresh_token" validate:"required"`
+		AccessToken  string `json:"access_token" validate:"required" example:"kmzway87aa.typmalsk1s"`
+		RefreshToken string `json:"refresh_token" validate:"required" example:"emzalsoads10.sadqpalj1"`
 	}
 )
 

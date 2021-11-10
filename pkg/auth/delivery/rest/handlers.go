@@ -69,6 +69,15 @@ func (h *handler) Me(c echo.Context) error {
 	return c.JSON(http.StatusOK, res)
 }
 
+// Login godoc
+// @Tags Auth
+// @Summary Login for user
+// @Accept json
+// @Produce json
+// @Param body body swagger.UserRequest true "Body"
+// @Success 200 {object} domain.AuthUser
+// @Failure 400,401,500 {object} swagger.Error
+// @Router /auth/login [post]
 func (h *handler) Login(c echo.Context) error {
 	u := new(domain.User)
 
@@ -87,6 +96,15 @@ func (h *handler) Login(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
+// Register godoc
+// @Tags Auth
+// @Summary Register new user
+// @Accept json
+// @Produce json
+// @Param body body swagger.UserRequest true "Body"
+// @Success 201 {object} domain.AuthUser
+// @Failure 400,401,500 {object} swagger.Error
+// @Router /auth/register [post]
 func (h *handler) Register(c echo.Context) error {
 	u := new(domain.User)
 
