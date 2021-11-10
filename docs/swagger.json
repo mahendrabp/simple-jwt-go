@@ -1,0 +1,33 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server JWT Golang.",
+        "title": "Simple JWT Golang",
+        "contact": {
+            "name": "mahendrabp",
+            "url": "https://github.com/mehendrabp"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:5202",
+    "basePath": "/api",
+    "paths": {
+        "/todos": {
+            "post": {}
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

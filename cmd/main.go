@@ -10,6 +10,23 @@ import (
 	"simple-jwt-go/pkg/config"
 )
 
+// @title Simple JWT Golang
+// @version 1.0
+// @description This is a sample server JWT Golang.
+
+// @contact.name mahendrabp
+// @contact.url https://github.com/mehendrabp
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
+// @host localhost:5202
+// @BasePath /api
+// @schemes http
 func main() {
 	fmt.Printf("PID: %d\n", os.Getpid())
 

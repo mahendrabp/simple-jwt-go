@@ -1,0 +1,23 @@
+basePath: /api
+host: localhost:5202
+info:
+  contact:
+    name: mahendrabp
+    url: https://github.com/mehendrabp
+  description: This is a sample server JWT Golang.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Simple JWT Golang
+  version: "1.0"
+paths:
+  /todos:
+    post: {}
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
