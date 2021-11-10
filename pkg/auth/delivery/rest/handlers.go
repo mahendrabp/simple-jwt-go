@@ -27,9 +27,10 @@ func Init(cfg *config.Config, e *echo.Group, uuc domain.UserUseCase, log utils.L
 	auth := middleware.Auth(cfg, uuc, log)
 
 	authGroup := e.Group("/auth")
-	authGroup.POST("/me", h.Me, auth)
+	authGroup.GET("/me", h.Me, auth)
 	authGroup.POST("/login", h.Login)
 	authGroup.POST("/register", h.Register)
+	authGroup.POST("/refresh", h.Refresh)
 
 }
 
@@ -102,4 +103,45 @@ func (h *handler) Register(c echo.Context) error {
 	h.setCookies(c, createdUser)
 
 	return c.JSON(http.StatusCreated, createdUser)
+}
+
+func (h *handler) Refresh(c echo.Context) error {
+
+	mapToken := map[string]string{}
+
+	if err := c.Bind(&mapToken); err != nil {
+		return echo.ErrBadRequest
+	}
+
+	refreshToken := mapToken["refresh_token"]
+
+	if refreshToken != "" {
+		if err := utils.VerifyRefreshTokenInBody(c, h.cfg.Server.JwtRefreshSecret, h.log, refreshToken); err != nil {
+			h.log.ErrorFormat("verifyRefreshToken: %v", err)
+			return echo.ErrUnauthorized
+		}
+	} else {
+		if err := utils.VerifyRefreshToken(c, h.cfg.Server.JwtRefreshSecret, h.log); err != nil {
+			h.log.ErrorFormat("verifyRefreshToken: %v", err)
+			return echo.ErrUnauthorized
+		}
+	}
+
+	userID := c.Get("user_id").(uuid.UUID)
+
+	u, err := h.userUseCase.GetByID(userID)
+	if err != nil {
+		h.log.ErrorFormat("auth.UseCase.GetByID: %v", err)
+		return err
+	}
+
+	user, err := h.userUseCase.Auth(&u)
+	if err != nil {
+		h.log.ErrorFormat("auth.UseCase.Auth: %v", err)
+		return err
+	}
+
+	h.setCookies(c, user)
+
+	return c.JSON(http.StatusOK, user)
 }

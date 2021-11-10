@@ -153,3 +153,14 @@ func VerifyRefreshToken(c echo.Context, secret string, log Logger) error {
 
 	return nil
 }
+
+//
+func VerifyRefreshTokenInBody(c echo.Context, secret string, log Logger, refreshToken string) error {
+
+	if err := ValidateToken(c, "refresh", refreshToken, secret); err != nil {
+		log.ErrorFormat("validateToken: %v", err)
+		return err
+	}
+
+	return nil
+}

@@ -18,10 +18,10 @@ func Auth(cfg *config.Config, userUseCase domain.UserUseCase, log utils.Logger) 
 				return echo.ErrUnauthorized
 			}
 
-			if err := utils.VerifyRefreshToken(c, cfg.Server.JwtRefreshSecret, log); err != nil {
-				log.ErrorFormat("verifyRefreshToken: %v", err)
-				return echo.ErrUnauthorized
-			}
+			// if err := utils.VerifyRefreshToken(c, cfg.Server.JwtRefreshSecret, log); err != nil {
+			// 	log.ErrorFormat("verifyRefreshToken: %v", err)
+			// 	return echo.ErrUnauthorized
+			// }
 
 			return next(c)
 		}
